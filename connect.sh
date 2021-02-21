@@ -22,6 +22,13 @@ if [ $1 = '--mode=DB' ]; then
   scp $HOSTNAME:$DIR/db.sql db.sql
   echo 'Cleaning up our messes'
   ssh -t $HOSTNAME "cd ${DIR} && rm db.sql"
+  APP=$LANDO_APP_NAME
+  DOMAIN=$LANDO_DOMAIN
+  url=https://$APP.$DOMAIN
+  echo 'Import the database'
+  wp db import db.sql
+  old=$(wp option get siteurl) && echo $old
+  wp search-replace $old $url
 fi
 
 if [ $1 = '--mode=FS' ]; then
