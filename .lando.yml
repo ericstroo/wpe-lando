@@ -25,8 +25,7 @@ tooling:
   download:db:
     service: appserver
     level: app
-    cmd:
-      - /app/connect.sh --mode=DB
+    cmd: /app/connect.sh --mode=DB
     options:
       env:
         passthrough: true
@@ -45,8 +44,7 @@ tooling:
   download:fs:
     service: appserver
     level: app
-    cmd:
-      - /app/connect.sh --mode=FS
+    cmd: /app/connect.sh --mode=FS
     options:
       env:
         passthrough: true
@@ -62,6 +60,12 @@ tooling:
           message: What environment should we pull
           default: DEV
           weight: 600
+
+
+  install:wordpress:
+    service: appserver
+    cmd:
+      - wp core download && wp config create --dbname=wordpress --dbuser=wordpress --dbpass=wordpress --dbhost=database
 events:
   post-start:
-    - if [ ! -f wp-config.php ]; then wp core download && wp config create --dbname=wordpress --dbuser=wordpress --dbpass=wordpress --dbhost=database ; fi
+    - if [ ! -f wp-config.php ]; then wp core download && wp config create --dbname=wordpress --dbuser=wordpress --dbpass=wordpress --dbhost=database && wp core install --url=http://$LANDO_APP_NAME.$LANDO_DOMAIN --title=$LANDO_APP_NAME --admin_user=admin --admin_email=admin@admin.com ; fi
