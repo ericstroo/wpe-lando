@@ -1,0 +1,67 @@
+name: ourapp # Name must be unique for each app!
+recipe: wordpress
+config:
+  php: '7.4'
+  via: nginx
+  database: mariadb
+  xdebug: true
+  config:
+    php: php.ini
+services:
+  mailhog:
+    type: mailhog # Spin up a mailhog container called "mailhog".
+    hogfrom: # Hog from appserver or nginx as appropriate.
+      - appserver
+  pma:
+    type: phpmyadmin # Spin up a phpmyadmin container called "pma".
+    hosts:
+      - database
+  ## Uncomment this section if needed for system/integration tests.
+  appserver:
+    overrides:
+      environment:
+        PHP_IDE_CONFIG: "serverName=appserver"
+tooling:
+  download:db:
+    service: appserver
+    level: app
+    cmd:
+      - /app/connect.sh --mode=DB
+    options:
+      env:
+        passthrough: true
+        alias:
+          - e
+        describe: What environment are we using
+        interactive:
+          type: list
+          choices:
+            - DEV
+            - STG
+            - PRD
+          message: What environment should we pull
+          default: DEV
+          weight: 600
+  download:fs:
+    service: appserver
+    level: app
+    cmd:
+      - /app/connect.sh --mode=FS
+    options:
+      env:
+        passthrough: true
+        alias:
+          - e
+        describe: What environment are we using
+        interactive:
+          type: list
+          choices:
+            - DEV
+            - STG
+            - PRD
+          message: What environment should we pull
+          default: DEV
+          weight: 600
+events:
+  post-start:
+    - if [ ! -f wp-config.php ]; then wp core download && wp config create --dbname=wordpress --dbuser=wordpress --dbpass=wordpress --dbhost=database ; fi
