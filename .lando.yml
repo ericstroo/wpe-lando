@@ -16,6 +16,12 @@ services:
     type: phpmyadmin # Spin up a phpmyadmin container called "pma".
     hosts:
       - database
+  node:
+    type: node
+    build:
+      - npm install
+    globals:
+      gulp-cli: latest
   ## Uncomment this section if needed for system/integration tests.
   appserver:
     overrides:
@@ -44,7 +50,10 @@ tooling:
   download:fs:
     service: appserver
     level: app
-    cmd: /app/connect.sh --mode=FS
+    cmd:
+      - /app/connect.sh --mode=FS
+      # - old=$(echo "SELECT * FROM wp_options WHERE option_name=siteurl" | mysql wordpress -h database -u wordpress -pwordpress) && echo $old
+
     options:
       env:
         passthrough: true
@@ -60,8 +69,6 @@ tooling:
           message: What environment should we pull
           default: DEV
           weight: 600
-
-
   install:wordpress:
     service: appserver
     cmd:
@@ -69,3 +76,6 @@ tooling:
 events:
   post-start:
     - if [ ! -f wp-config.php ]; then wp core download && wp config create --dbname=wordpress --dbuser=wordpress --dbpass=wordpress --dbhost=database && wp core install --url=http://$LANDO_APP_NAME.$LANDO_DOMAIN --title=$LANDO_APP_NAME --admin_user=admin --admin_email=admin@admin.com ; fi
+    - composer update
+env_file:
+  - keys.env
