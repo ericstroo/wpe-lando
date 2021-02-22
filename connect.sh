@@ -33,6 +33,6 @@ fi
 
 if [ $1 = '--mode=FS' ]; then
   echo 'RSYNC'
-  rsync -avz $HOSTNAME:$DIR/wp-content/uploads wp-contentc
+  rsync -avz $HOSTNAME:$DIR/wp-content/uploads wp-content
   
 fi
