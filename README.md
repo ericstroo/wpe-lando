@@ -13,7 +13,7 @@ From 0 to runtime, it should be straight forward:
  1. Clone this repo wherever you want to begin a WPE project
  2. Change the `.lando.yml` file to meet your project needs (at least the name field, though you might want to change some of the services and tooling if Composer and Gulp aren't your thing).
  3. Edit the `connect.sh` with your site environment variables. They should be findable in your WordPress Engine control panel. 
- 4. `lando start` will get you a working website. It'll attempt to create the wp-config files and also create a dummy install of wordpress. (Note: the dummy install step doesn't always work for #reasons I don't know about you).
+ 4. `lando start` will get you a working website. It'll attempt to create the wp-config files and also create a dummy install of wordpress. (Note: the dummy install step doesn't always work for #reasons I don't know about yet).
  5. `lando download:db` and Lando will connect to WPE over SSH, perform some wp-cli commands, scp the exported database, import it, delete the exported database, and perform a search and replace to match the lando site domain.
  6. `lando download:media` will grab the uploads directory and rsync it down.
 
