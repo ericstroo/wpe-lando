@@ -38,8 +38,8 @@ if [ $1 = '--mode=puDB' ]; then
   scp db.sql $HOSTNAME:$DIR/db.sql
   echo 'Cleaning up our messes'
   rm db.sql
-  ssh -t $HOSTNAME && "cd ${DIR} && url=$(wp option get siteurl)
-  ssh -t $HOSTNAME "cd ${DIR}" && wp db import db.sql"
+  ssh -t $HOSTNAME && "cd ${DIR}" && url=$(wp option get siteurl)
+  ssh -t $HOSTNAME "cd ${DIR} && wp db import db.sql"
   old=$(wp option get siteurl) && echo $old
   wp search-replace $old $url
   ssh -t $HOSTNAME "cd ${DIR} && rm db.sql"
@@ -47,7 +47,7 @@ fi
 
 if [ $1 = '--mode=plFS' ]; then
   echo 'RSYNC DOWN'
-  rsync -avz $HOSTNAME:$DIR/wp-content/uploads/ wp-content/
+  rsync -avz $HOSTNAME:$DIR/wp-content/uploads/ wp-content/uploads
 
 fi
 
