@@ -39,7 +39,7 @@ if [ $1 = '--mode=puDB' ]; then
   echo 'Cleaning up our messes'
   rm db.sql
   ssh -t $HOSTNAME && "cd ${DIR} && url=$(wp option get siteurl)
-  ssh -t $HOSTNAME "cd ${DIR} && wp db import db.sql"
+  ssh -t $HOSTNAME "cd ${DIR}" && wp db import db.sql"
   old=$(wp option get siteurl) && echo $old
   wp search-replace $old $url
   ssh -t $HOSTNAME "cd ${DIR} && rm db.sql"
