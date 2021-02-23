@@ -25,5 +25,5 @@ I like gulp so I tooled it up to be my frontend build system. Play around with t
 Credits:
 * [Lando](https://github.com/lando/), for being awesome.
 * Rubidiot for giving me the idea of shell scripting with his (much better written and very clever full-on Docker answer) https://github.com/rubidot/WPUtil/
-* The [ComputerCourage](www.computercourage.com) dev team who helped prove the concept with me.
+* The [ComputerCourage](https://www.computercourage.com) dev team who helped prove the concept with me.
 
