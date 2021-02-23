@@ -1,6 +1,6 @@
 {
   "name": "<<VENDOR>>/<<PROJECT>>",
-  "description": "Description,
+  "description": "Description",
   "type": "library",
   "config": {
     "preferred-install": "dist"
