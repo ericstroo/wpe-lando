@@ -50,12 +50,12 @@ fi
 
 if [ $1 = '--mode=plFS' ]; then
   echo 'RSYNC DOWN'
-  rsync -avz $HOSTNAME:$DIR/wp-content/uploads/ wp-content/uploads/
+  rsync -avz $HOSTNAME:$DIR/wp-content/uploads/ wp-content/
 
 fi
 
 if [ $1 = '--mode=puFS' ]; then
   echo 'RSYNC UP'
-  rsync -avz wp-content/uploads/ $HOSTNAME:$DIR/wp-content/uploads/
+  rsync -avz wp-content/uploads/ $HOSTNAME:$DIR/wp-content/
   # echo 'Import the database'
 fi
