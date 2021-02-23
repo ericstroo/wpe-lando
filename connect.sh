@@ -38,13 +38,10 @@ if [ $1 = '--mode=puDB' ]; then
   scp db.sql $HOSTNAME:$DIR/db.sql
   echo 'Cleaning up our messes'
   rm db.sql
-  APP=$LANDO_APP_NAME
-  DOMAIN=$LANDO_DOMAIN
-  url=https://$APP.$DOMAIN
-  echo 'Import the database'
+  ssh -t $HOSTNAME && "cd ${DIR} && url=$(wp option get siteurl)
   ssh -t $HOSTNAME "cd ${DIR} && wp db import db.sql"
   old=$(wp option get siteurl) && echo $old
-  wp search-replace $url $old
+  wp search-replace $old $url
   ssh -t $HOSTNAME "cd ${DIR} && rm db.sql"
 fi
 
