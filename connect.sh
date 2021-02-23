@@ -50,7 +50,7 @@ fi
 
 if [ $1 = '--mode=plFS' ]; then
   echo 'RSYNC DOWN'
-  rsync -avz $HOSTNAME:$DIR/wp-content/uploads/ wp-content/
+  rsync -avz $HOSTNAME:$DIR/wp-content/uploads/ wp-content/uploads/
 
 fi
 
