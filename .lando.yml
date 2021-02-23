@@ -1,5 +1,9 @@
-name: ourapp # Name must be unique for each app!
+name: appname # Name must be unique for each app!
 recipe: wordpress
+excludes:
+  - vendor
+  - node_modules
+  - modules/contrib
 config:
   php: '7.4'
   via: nginx
@@ -9,12 +13,11 @@ config:
     php: php.ini
 services:
   mailhog:
-    type: mailhog # Spin up a mailhog container called "mailhog".
-    hogfrom: # Hog from appserver or nginx as appropriate.
+    type: mailhog
+    hogfrom:
       - appserver
   pma:
-    type: phpmyadmin # Spin up a phpmyadmin container called "pma".
-    hosts:
+    type: phpmyadmin
       - database
   node:
     type: node
@@ -22,16 +25,44 @@ services:
       - npm install
     globals:
       gulp-cli: latest
-  ## Uncomment this section if needed for system/integration tests.
   appserver:
     overrides:
       environment:
         PHP_IDE_CONFIG: "serverName=appserver"
 tooling:
+  npm:
+    service: node
+  node:
+    service: node
+  gulp:
+    service: node
+  yarn:
+    service: node
+
+  upload:db:
+    service: appserver
+    level: app
+    cmd: /app/connect.sh --mode=puDB
+    options:
+      env:
+        passthrough: true
+        alias:
+          - e
+        describe: What environment are we using
+        interactive:
+          type: list
+          choices:
+            - DEV
+            - STG
+            - PRD
+          message: What environment should we push the database to?
+          default: DEV
+          weight: 600
+
   download:db:
     service: appserver
     level: app
-    cmd: /app/connect.sh --mode=DB
+    cmd: /app/connect.sh --mode=plDB
     options:
       env:
         passthrough: true
@@ -44,16 +75,15 @@ tooling:
             - DEV
             - STG
             - PRD
-          message: What environment should we pull
+          message: What environment should we pull the database from?
           default: DEV
           weight: 600
-  download:fs:
+
+  download:media:
     service: appserver
     level: app
     cmd:
-      - /app/connect.sh --mode=FS
-      # - old=$(echo "SELECT * FROM wp_options WHERE option_name=siteurl" | mysql wordpress -h database -u wordpress -pwordpress) && echo $old
-
+      - /app/connect.sh --mode=plFS
     options:
       env:
         passthrough: true
@@ -66,7 +96,28 @@ tooling:
             - DEV
             - STG
             - PRD
-          message: What environment should we pull
+          message: What environment should we pull the uploads directory from?
+          default: DEV
+          weight: 600
+          
+  upload:media:
+    service: appserver
+    level: app
+    cmd:
+      - /app/connect.sh --mode=puFS
+    options:
+      env:
+        passthrough: true
+        alias:
+          - e
+        describe: What environment are we using
+        interactive:
+          type: list
+          choices:
+            - DEV
+            - STG
+            - PRD
+          message: What environment should we push the media to?
           default: DEV
           weight: 600
   install:wordpress:
@@ -77,5 +128,5 @@ events:
   post-start:
     - if [ ! -f wp-config.php ]; then wp core download && wp config create --dbname=wordpress --dbuser=wordpress --dbpass=wordpress --dbhost=database && wp core install --url=http://$LANDO_APP_NAME.$LANDO_DOMAIN --title=$LANDO_APP_NAME --admin_user=admin --admin_email=admin@admin.com ; fi
     - composer update
+#If you want to have lando source environment variables, provide the .env files here. Useful for composer.    
 env_file:
-  - keys.env
