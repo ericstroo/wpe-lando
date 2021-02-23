@@ -15,7 +15,7 @@ if [ $2 = '--env=DEV' ]; then
   DIR='sites/sitedev'
 fi
 
-if [ $1 = '--mode=DB' ]; then
+if [ $1 = '--mode=plDB' ]; then
   echo 'Backing up the database'
   ssh -t $HOSTNAME "cd ${DIR} && wp db export db.sql"
   echo 'Downloading the database'
@@ -31,8 +31,31 @@ if [ $1 = '--mode=DB' ]; then
   wp search-replace $old $url
 fi
 
-if [ $1 = '--mode=FS' ]; then
-  echo 'RSYNC'
-  rsync -avz $HOSTNAME:$DIR/wp-content/uploads wp-content
-  
+if [ $1 = '--mode=puDB' ]; then
+  echo 'Backing up the database'
+  wp db export db.sql
+  echo 'Uploading the database'
+  scp db.sql $HOSTNAME:$DIR/db.sql
+  echo 'Cleaning up our messes'
+  rm db.sql
+  APP=$LANDO_APP_NAME
+  DOMAIN=$LANDO_DOMAIN
+  url=https://$APP.$DOMAIN
+  echo 'Import the database'
+  ssh -t $HOSTNAME "cd ${DIR} && wp db import db.sql"
+  old=$(wp option get siteurl) && echo $old
+  wp search-replace $url $old
+  ssh -t $HOSTNAME "cd ${DIR} && rm db.sql"
+fi
+
+if [ $1 = '--mode=plFS' ]; then
+  echo 'RSYNC DOWN'
+  rsync -avz $HOSTNAME:$DIR/wp-content/uploads/ wp-content/
+
+fi
+
+if [ $1 = '--mode=puFS' ]; then
+  echo 'RSYNC UP'
+  rsync -avz wp-content/uploads/ $HOSTNAME:$DIR/wp-content/uploads/
+  # echo 'Import the database'
 fi
