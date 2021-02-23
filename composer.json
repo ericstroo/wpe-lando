@@ -1,12 +1,11 @@
 {
-  "name": "computercourage/proto",
-  "description": "A WordPress Framework That Works",
+  "name": "<<VENDOR>>/<<PROJECT>>",
+  "description": "Description,
   "type": "library",
+  "config": {
+    "preferred-install": "dist"
+  },
   "repositories":[
-    {
-      "type": "composer",
-      "url": "https://pivvenit.github.io/acf-composer-bridge/composer/v3/wordpress-plugin/"
-    },
     {
       "type":"composer",
       "url":"https://wpackagist.org",
@@ -22,11 +21,18 @@
     "wpackagist-plugin/wordpress-seo": "*",
     "wpackagist-plugin/wp-cfm": "*",
     "wpackagist-plugin/acf-content-analysis-for-yoast-seo": "*",
-    "advanced-custom-fields/advanced-custom-fields-pro" : "^5.9.5"
+    "wpackagist-plugin/stream": "*",
+    "wpackagist-plugin/wp-smushit": "*",
+    "wpackagist-plugin/disable-comments" : "*",
   },
   "extra": {
     "installer-paths": {
       "wp-content/plugins/{$name}/": ["type:wordpress-plugin"]
     }
   },
+  "authors": [
+    {
+      "name": "Eric Stroo"
+    }
+  ]
 }
