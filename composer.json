@@ -1,38 +1,34 @@
 {
-  "name": "<<VENDOR>>/<<PROJECT>>",
-  "description": "Description",
-  "type": "library",
-  "config": {
-    "preferred-install": "dist"
-  },
-  "repositories":[
-    {
-      "type":"composer",
-      "url":"https://wpackagist.org",
-      "only": [
-        "wpackagist-plugin/*",
-        "wpackagist-theme/*"
-      ]
-    }
-  ],
-  "require": {
-    "wp-packagist/wp-packagist": "^1.0",
-    "wpackagist-plugin/timber-library": "*",
-    "wpackagist-plugin/wordpress-seo": "*",
-    "wpackagist-plugin/wp-cfm": "*",
-    "wpackagist-plugin/acf-content-analysis-for-yoast-seo": "*",
-    "wpackagist-plugin/stream": "*",
-    "wpackagist-plugin/wp-smushit": "*",
-    "wpackagist-plugin/disable-comments" : "*",
-  },
-  "extra": {
-    "installer-paths": {
-      "wp-content/plugins/{$name}/": ["type:wordpress-plugin"]
-    }
-  },
-  "authors": [
-    {
-      "name": "Eric Stroo"
-    }
-  ]
+	"name": "<<VENDOR>>/<<PROJECT>>",
+	"description": "Description",
+	"type": "library",
+	"config": {
+		"preferred-install": "dist"
+	},
+	"repositories": [{
+		"type": "composer",
+		"url": "https://wpackagist.org",
+		"only": [
+			"wpackagist-plugin/*",
+			"wpackagist-theme/*"
+		]
+	}],
+	"require": {
+		"wp-packagist/wp-packagist": "^1.0",
+		"wpackagist-plugin/timber-library": "*",
+		"wpackagist-plugin/wordpress-seo": "*",
+		"wpackagist-plugin/wp-cfm": "*",
+		"wpackagist-plugin/acf-content-analysis-for-yoast-seo": "*",
+		"wpackagist-plugin/stream": "*",
+		"wpackagist-plugin/wp-smushit": "*",
+		"wpackagist-plugin/disable-comments": "*"
+	},
+	"extra": {
+		"installer-paths": {
+			"wp-content/plugins/{$name}/": ["type:wordpress-plugin"]
+		}
+	},
+	"authors": [{
+		"name": "Eric Stroo"
+	}]
 }
