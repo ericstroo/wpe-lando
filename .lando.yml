@@ -39,7 +39,11 @@ tooling:
     service: node
   yarn:
     service: node
-
+  
+  admin:reset:
+    service: appserver
+    cmd: wp user update 1 --user_email=test@test.com && wp user update 1 --user_pass=admin
+  
   upload:db:
     service: appserver
     level: app
