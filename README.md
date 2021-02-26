@@ -19,6 +19,15 @@ From 0 to runtime, it should be straight forward:
 
 There are also upload versions of those same scripts. The system assumes that plugins and themes are under some form of dependent control and/or version control. The system wants you to push code up over git and pull down database and uploads over scp/rsync. 
 
+## Command Reference
+`lando admin:reset` will reset the `user_email` to `test@test.com` and the `user_pass` to `admin`. This is useful if you just want to hack on a site locally and not muck about with credentials. Please don't push a database to production (or anywhere) after running this command. Also, please just don't push databases to production.
+
+`lando download:media` will prompt you for the environment you wish to pull from and then will rsync the uploads folder to you.
+
+`lando download:db` will prompt you for the environment you wish to pull from and the perform a bunch of commands to import and search/replace a database
+
+There are also upload scripts of both but I haven't tested them so don't rely on them for anything.
+
 ## Other Things
 I like gulp so I tooled it up to be my frontend build system. Play around with the gulpfile.js if you want to wire that up to do things like sass and JS builds. Still early days there. I also like composer so plugins are managed using wp-packagist. You can add env files to .lando.yml if you want to source env files that get used for things like premium plugins.
 
