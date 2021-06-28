@@ -29,7 +29,7 @@
     "gulp-jshint": "^2.1.0",
     "gulp-pixrem": "^1.0.0",
     "gulp-plumber": "^1.2.1",
-    "gulp-sass": "^4.0.2",
+    "gulp-sass": "^5.0.0",
     "gulp-uglify": "^3.0.2",
     "gulp-watch": "^5.0.1",
     "jshint": "^2.10.2",
